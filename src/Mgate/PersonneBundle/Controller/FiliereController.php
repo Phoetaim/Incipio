@@ -41,6 +41,7 @@ class FiliereController extends Controller
 
                 return $this->redirectToRoute('MgatePersonne_poste_homepage');
             }
+            $this->addFlash('danger', 'Le formulaire contient des erreurs.');
         }
 
         return $this->render('MgatePersonneBundle:Filiere:ajouter.html.twig', [

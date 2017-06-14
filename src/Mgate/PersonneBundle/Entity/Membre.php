@@ -256,7 +256,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setIdentifiant($identifiant)
+    public function setIdentifiant(?string $identifiant)
     {
         $this->identifiant = $identifiant;
 
@@ -268,7 +268,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getIdentifiant()
+    public function getIdentifiant(): ?string
     {
         return $this->identifiant;
     }
@@ -295,7 +295,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Personne
      */
-    public function getPersonne()
+    public function getPersonne(): ?Personne
     {
         return $this->personne;
     }
@@ -342,7 +342,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setPromotion($promotion)
+    public function setPromotion(?int $promotion)
     {
         $this->promotion = $promotion;
 
@@ -354,7 +354,7 @@ class Membre implements AnonymizableInterface
      *
      * @return int
      */
-    public function getPromotion()
+    public function getPromotion(): ?int
     {
         return $this->promotion;
     }
@@ -366,7 +366,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setDateDeNaissance($dateDeNaissance)
+    public function setDateDeNaissance(?\DateTime $dateDeNaissance)
     {
         $this->dateDeNaissance = $dateDeNaissance;
 
@@ -378,7 +378,7 @@ class Membre implements AnonymizableInterface
      *
      * @return \DateTime
      */
-    public function getDateDeNaissance()
+    public function getDateDeNaissance(): ?\DateTime
     {
         return $this->dateDeNaissance;
     }
@@ -390,7 +390,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setLieuDeNaissance($lieuDeNaissance)
+    public function setLieuDeNaissance(?string $lieuDeNaissance)
     {
         $this->lieuDeNaissance = $lieuDeNaissance;
 
@@ -402,7 +402,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getLieuDeNaissance()
+    public function getLieuDeNaissance(): ?string
     {
         return $this->lieuDeNaissance;
     }
@@ -414,7 +414,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setNationalite($nationalite)
+    public function setNationalite(?string $nationalite)
     {
         $this->nationalite = $nationalite;
 
@@ -426,7 +426,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getNationalite()
+    public function getNationalite(): ?string
     {
         return $this->nationalite;
     }
@@ -438,7 +438,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setEmailEMSE($emailEMSE)
+    public function setEmailEMSE(?string $emailEMSE)
     {
         $this->emailEMSE = $emailEMSE;
 
@@ -450,7 +450,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getEmailEMSE()
+    public function getEmailEMSE(): ?string
     {
         return $this->emailEMSE;
     }
@@ -462,7 +462,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setDateConventionEleve($dateConventionEleve)
+    public function setDateConventionEleve(?\DateTime $dateConventionEleve)
     {
         $this->dateConventionEleve = $dateConventionEleve;
 
@@ -474,7 +474,7 @@ class Membre implements AnonymizableInterface
      *
      * @return \DateTime
      */
-    public function getDateConventionEleve()
+    public function getDateConventionEleve(): ?\DateTime
     {
         return $this->dateConventionEleve;
     }
@@ -554,7 +554,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setPhotoURI($photoURI)
+    public function setPhotoURI(?string $photoURI)
     {
         $this->photoURI = $photoURI;
 
@@ -566,7 +566,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getPhotoURI()
+    public function getPhotoURI(): ?string
     {
         return $this->photoURI;
     }
@@ -578,7 +578,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Membre
      */
-    public function setformatPaiement($formatPaiement)
+    public function setformatPaiement(?string $formatPaiement)
     {
         $this->formatPaiement = $formatPaiement;
 
@@ -590,7 +590,7 @@ class Membre implements AnonymizableInterface
      *
      * @return string
      */
-    public function getformatPaiement()
+    public function getformatPaiement(): ?string
     {
         return $this->formatPaiement;
     }
@@ -614,7 +614,7 @@ class Membre implements AnonymizableInterface
      *
      * @return Filiere
      */
-    public function getFiliere()
+    public function getFiliere(): ?Filiere
     {
         return $this->filiere;
     }
@@ -656,7 +656,7 @@ class Membre implements AnonymizableInterface
     /**
      * @return mixed
      */
-    public function getSecuriteSociale()
+    public function getSecuriteSociale(): ?string
     {
         return $this->securiteSociale;
     }
@@ -664,7 +664,7 @@ class Membre implements AnonymizableInterface
     /**
      * @param mixed $securiteSociale
      */
-    public function setSecuriteSociale($securiteSociale)
+    public function setSecuriteSociale(?string $securiteSociale)
     {
         $this->securiteSociale = $securiteSociale;
     }
@@ -672,7 +672,7 @@ class Membre implements AnonymizableInterface
     /**
      * @return mixed
      */
-    public function getCommentaire()
+    public function getCommentaire(): ?string
     {
         return $this->commentaire;
     }
@@ -680,7 +680,7 @@ class Membre implements AnonymizableInterface
     /**
      * @param mixed $commentaire
      */
-    public function setCommentaire($commentaire)
+    public function setCommentaire(?string $commentaire)
     {
         $this->commentaire = $commentaire;
     }

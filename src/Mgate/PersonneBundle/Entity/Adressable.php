@@ -70,7 +70,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return Adressable
      */
-    public function setAdresse($adresse)
+    public function setAdresse(?string $adresse)
     {
         $this->adresse = $adresse;
 
@@ -82,7 +82,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return string
      */
-    public function getAdresse()
+    public function getAdresse(): ?string
     {
         return $this->adresse;
     }
@@ -94,7 +94,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return Adressable
      */
-    public function setCodePostal($codepostal)
+    public function setCodePostal(?int $codepostal)
     {
         $this->codepostal = $codepostal;
 
@@ -106,7 +106,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return int
      */
-    public function getCodePostal()
+    public function getCodePostal(): ?int
     {
         return $this->codepostal;
     }
@@ -118,7 +118,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return Adressable
      */
-    public function setVille($ville)
+    public function setVille(?string $ville)
     {
         $this->ville = $ville;
 
@@ -130,7 +130,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return string
      */
-    public function getVille()
+    public function getVille(): ?string
     {
         return $this->ville;
     }
@@ -142,7 +142,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return Adressable
      */
-    public function setPays($pays)
+    public function setPays(?string $pays)
     {
         $this->pays = $pays;
 
@@ -154,7 +154,7 @@ class Adressable implements AnonymizableInterface
      *
      * @return string
      */
-    public function getPays()
+    public function getPays(): ?string
     {
         return $this->pays;
     }

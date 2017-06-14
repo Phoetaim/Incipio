@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-// src/Mgate/UserBundle/Entity/User.php
-
 namespace Mgate\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -71,7 +69,7 @@ class User extends BaseUser
      *
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -99,12 +97,12 @@ class User extends BaseUser
      *
      * @return Personne
      */
-    public function getPersonne()
+    public function getPersonne(): ?Personne
     {
         return $this->personne;
     }
 
-    private static function convertRoleToLabel($role)
+    private static function convertRoleToLabel($role): string
     {
         $roleDisplay = str_replace('ROLE_', '', $role);
         $roleDisplay = str_replace('_', ' ', $roleDisplay);
@@ -117,7 +115,7 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getRolesDisplay()
+    public function getRolesDisplay(): string
     {
         $rolesArray = $this->getRoles();
 

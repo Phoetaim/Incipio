@@ -95,7 +95,7 @@ class Mandat
      *
      * @return Mandat
      */
-    public function setDebutMandat($debutMandat)
+    public function setDebutMandat(?\DateTime $debutMandat)
     {
         $this->debutMandat = $debutMandat;
 
@@ -107,7 +107,7 @@ class Mandat
      *
      * @return \DateTime
      */
-    public function getDebutMandat()
+    public function getDebutMandat(): ?\DateTime
     {
         return $this->debutMandat;
     }
@@ -119,7 +119,7 @@ class Mandat
      *
      * @return Mandat
      */
-    public function setFinMandat($finMandat)
+    public function setFinMandat(?\DateTime $finMandat)
     {
         $this->finMandat = $finMandat;
 
@@ -131,7 +131,7 @@ class Mandat
      *
      * @return \DateTime
      */
-    public function getFinMandat()
+    public function getFinMandat(): ?\DateTime
     {
         return $this->finMandat;
     }
@@ -179,7 +179,7 @@ class Mandat
      *
      * @return Poste
      */
-    public function getPoste()
+    public function getPoste(): ?Poste
     {
         return $this->poste;
     }

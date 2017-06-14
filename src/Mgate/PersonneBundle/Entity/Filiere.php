@@ -69,7 +69,7 @@ class Filiere
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -77,7 +77,7 @@ class Filiere
     /**
      * @return string
      */
-    public function getNom()
+    public function getNom(): ?string
     {
         return $this->nom;
     }
@@ -85,7 +85,7 @@ class Filiere
     /**
      * @param string $nom
      */
-    public function setNom($nom)
+    public function setNom(string $nom)
     {
         $this->nom = $nom;
     }
@@ -93,7 +93,7 @@ class Filiere
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -101,7 +101,7 @@ class Filiere
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(?string $description)
     {
         $this->description = $description;
     }

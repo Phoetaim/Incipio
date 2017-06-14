@@ -97,7 +97,7 @@ class Employe implements AnonymizableInterface
     /**
      * @return Prospect
      */
-    public function getProspect()
+    public function getProspect(): ?Prospect
     {
         return $this->prospect;
     }
@@ -123,7 +123,7 @@ class Employe implements AnonymizableInterface
      *
      * @return Personne
      */
-    public function getPersonne()
+    public function getPersonne(): ?Personne
     {
         return $this->personne;
     }
@@ -135,7 +135,7 @@ class Employe implements AnonymizableInterface
      *
      * @return Employe
      */
-    public function setPoste($poste)
+    public function setPoste(string $poste)
     {
         $this->poste = $poste;
 
@@ -147,7 +147,7 @@ class Employe implements AnonymizableInterface
      *
      * @return string
      */
-    public function getPoste()
+    public function getPoste(): ?string
     {
         return $this->poste;
     }
