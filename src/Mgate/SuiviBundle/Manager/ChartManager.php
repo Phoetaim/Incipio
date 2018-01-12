@@ -161,7 +161,20 @@ class ChartManager /*extends \Twig_Extension*/
                 $func = new Expr('function() {return this.point.titre;}');
                 $data[] = ['low' => $fin->getTimestamp() * 1000, 'y' => $debut->getTimestamp() * 1000,
                     'titre' => $phase->getTitre(), 'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 'color' => '#F26729',
-                    'dataLabels' => ['enabled' => true, 'align' => 'left', 'inside' => true, 'verticalAlign' => 'bottom', 'formatter' => $func, 'y' => -5], ];
+                    'dataLabels' => [
+                        'enabled' => true,
+                        'align' => 'left',
+                        'inside' => true,
+                        'verticalAlign' => 'bottom',
+                        'formatter' => $func,
+                        'y' => -5,
+                        'style' => [
+                            'color' => '#000000',
+                            'fontSize' => '11px',
+                            'fontFamily' => 'Liberation Sans',
+                            'textShadow' => '0 0 0px white', ],
+                        ],
+                    ];
             } else {
                 $data[] = [];
             }
@@ -272,7 +285,20 @@ class ChartManager /*extends \Twig_Extension*/
                 $func = new Expr('function() {return this.point.titre;}');
                 $data[] = ['low' => $fin->getTimestamp() * 1000, 'y' => $debut->getTimestamp() * 1000,
                     'titre' => $etude->getNom(), 'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 'color' => '#F26729',
-                    'dataLabels' => ['enabled' => true, 'align' => 'left', 'inside' => true, 'verticalAlign' => 'bottom', 'formatter' => $func, 'y' => -5], ];
+                    'dataLabels' => [
+                        'enabled' => true,
+                        'align' => 'left',
+                        'inside' => true,
+                        'verticalAlign' => 'bottom',
+                        'formatter' => $func,
+                        'y' => -5,
+                        'style' => [
+                            'color' => '#000000',
+                            'fontSize' => '11px',
+                            'fontFamily' => 'Liberation Sans',
+                            'textShadow' => '0 0 0px white', ],
+                        ],
+                    ];
             } else {
                 $data[] = [];
             }
