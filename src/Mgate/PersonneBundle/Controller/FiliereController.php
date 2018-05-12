@@ -100,7 +100,7 @@ class FiliereController extends Controller
             if (0 == count($em->getRepository('MgatePersonneBundle:Membre')->findByFiliere($filiere))) { //no members uses that filiere
                 $em->remove($filiere);
                 $em->flush();
-                $this->addFlash('success', 'Filiere supprimée avec succès');
+                $this->addFlash('success', 'Filière supprimée avec succès');
 
                 return $this->redirectToRoute('MgatePersonne_poste_homepage');
             } else {

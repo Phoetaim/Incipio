@@ -17,6 +17,7 @@ services:
           - "@Mgate.etude_manager"
           - "@logger"
           - "@app.json_key_value_store"
+          - "@kernel"
 
     form.type_extension.help_message:
         class: Mgate\SuiviBundle\Form\Extension\HelpMessageTypeExtension

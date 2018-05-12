@@ -107,7 +107,7 @@ class TraitementController extends Controller
     {
         $this->publipostage($templateName, $rootName, $rootObject_id);
 
-        return $this->telechargerAction($templateName);
+        return $this->telechargerAction();
     }
 
     private function publipostage($templateName, $rootName, $rootObject_id, $debug = false)
@@ -176,7 +176,6 @@ class TraitementController extends Controller
         $chemin = $this->getDoctypeAbsolutePathFromName($templateName, $debug);
 
         $templatesXMLtraite = $this->traiterTemplates($chemin, $rootName, $rootObject);
-        $repertoire = 'tmp';
 
         //SI DM on prend la ref de RM et ont remplace RM par DM
         if (self::DOCTYPE_DESCRIPTIF_MISSION == $templateName) {
@@ -206,7 +205,7 @@ class TraitementController extends Controller
         if (isset($isDM) && $isDM) {
             $refDocx = preg_replace('#RM#', 'DM', $refDocx);
         }
-
+        $repertoire = $this->get('kernel')->getRootDir() . '' . Document::DOCUMENT_TMP_FOLDER; // tmp folder in web directory
         $idDocx = $refDocx . '-' . ((int) strtotime('now') + rand());
         copy($chemin, $repertoire . '/' . $idDocx);
         $zip = new \ZipArchive();
@@ -257,14 +256,14 @@ class TraitementController extends Controller
     /**
      * @Security("has_role('ROLE_SUIVEUR')")
      */
-    public function telechargerAction($templateName)
+    public function telechargerAction()
     {
         $this->purge();
         if (isset($this->idDocx) && isset($this->refDocx)) {
             $idDocx = $this->idDocx;
             $refDocx = $this->refDocx;
 
-            $templateName = 'tmp/' . $idDocx;
+            $templateName =  $this->get('kernel')->getRootDir() . '' . Document::DOCUMENT_TMP_FOLDER . '/' . $idDocx;
 
             $response = new Response();
             $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
@@ -301,7 +300,7 @@ class TraitementController extends Controller
         if (!$documenttype = $em->getRepository('Mgate\PubliBundle\Entity\Document')->findOneBy(['name' => $doc])) {
             throw $this->createNotFoundException('Le doctype ' . $doc . ' n\'existe pas... C\'est bien balo');
         } else {
-            $chemin = $this->get('kernel')->getRootDir() . '' . $documenttype::DOCUMENT_STORAGE_ROOT . '/' . $documenttype->getPath();
+            $chemin = $this->get('kernel')->getRootDir() . '' . Document::DOCUMENT_STORAGE_ROOT . '/' . $documenttype->getPath();
         }
 
         return $chemin;

@@ -9,14 +9,17 @@
 namespace Mgate\PersonneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** @ORM\MappedSuperclass
  * Class gathering adresse related informations. Factorize code in an unique class.
  */
-class Adressable
+class Adressable implements AnonymizableInterface
 {
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="adresse", type="string", length=127, nullable=true)
      */
@@ -25,12 +28,16 @@ class Adressable
     /**
      * @var int(5)
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="codepostal", type="integer", nullable=true)
      */
     private $codepostal;
 
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="ville", type="string", length=63, nullable=true)
      */
@@ -39,16 +46,29 @@ class Adressable
     /**
      * @var string
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="pays", type="string", length=63, nullable=true)
      */
     private $pays;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function anonymize(): void
+    {
+        $this->adresse = null;
+        $this->codepostal = null;
+        $this->ville = null;
+        $this->pays = null;
+    }
 
     /**
      * Set adresse.
      *
      * @param string $adresse
      *
-     * @return Personne
+     * @return Adressable
      */
     public function setAdresse($adresse)
     {
@@ -72,7 +92,7 @@ class Adressable
      *
      * @param int $codepostal
      *
-     * @return Prospect
+     * @return Adressable
      */
     public function setCodePostal($codepostal)
     {
@@ -96,7 +116,7 @@ class Adressable
      *
      * @param string $ville
      *
-     * @return Prospect
+     * @return Adressable
      */
     public function setVille($ville)
     {
@@ -120,7 +140,7 @@ class Adressable
      *
      * @param string $pays
      *
-     * @return Prospect
+     * @return Adressable
      */
     public function setPays($pays)
     {

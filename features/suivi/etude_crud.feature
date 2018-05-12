@@ -13,3 +13,5 @@ Feature: Etude
   @dropSchema
   Scenario: Void
     Given I am logged in as "admin"
+    When I go to "/suivi/etude/315GLA"
+    Then the response status code should be 200

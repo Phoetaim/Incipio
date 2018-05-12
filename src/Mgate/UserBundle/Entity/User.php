@@ -16,6 +16,7 @@ namespace Mgate\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Mgate\PersonneBundle\Entity\Personne;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="Mgate\UserBundle\Entity\UserRepository")
@@ -31,7 +32,8 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="\Mgate\PersonneBundle\Entity\Personne", inversedBy="user", cascade={"persist", "merge", "remove"})
+     * @ORM\OneToOne(targetEntity="\Mgate\PersonneBundle\Entity\Personne", inversedBy="user", cascade={"persist",
+     *                                                                     "merge", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $personne;
@@ -42,6 +44,26 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * @Groups({"gdpr"})
+     *
+     * @return array
+     */
+    public function getJson()
+    {
+        return [
+            'username' => $this->username,
+            'usernameCanonical' => $this->usernameCanonical,
+            'email' => $this->email,
+            'emailCanonical' => $this->emailCanonical,
+            'enabled' => $this->enabled,
+            'lastLogin' => $this->lastLogin,
+            'passwordRequestedAt' => ($this->passwordRequestedAt ?
+                $this->passwordRequestedAt->format(\DateTime::ISO8601) : null),
+            'roles' => $this->roles,
+        ];
     }
 
     /**

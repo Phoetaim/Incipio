@@ -14,6 +14,7 @@ namespace Mgate\SuiviBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Mgate\PersonneBundle\Entity\Membre;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -54,21 +55,33 @@ class Mission extends DocType
 
     /**
      * @var \DateTime
+     *
      * @Assert\NotNull()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="debutOm", type="datetime", nullable=true)
      */
     private $debutOm;
 
     /**
      * @var \DateTime
+     *
      * @Assert\NotNull()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="finOm", type="datetime", nullable=true)
      */
     private $finOm;
 
     /**
      * @var float
+     *
      * @Assert\NotNull()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="pourcentageJunior", type="float", nullable=false)
      * Réel compris entre 0 et 1 représentant le pourcentage de la junior sur cette mission.
      */
@@ -76,7 +89,8 @@ class Mission extends DocType
 
     /**
      * @var RepartitionJEH
-     * @ORM\OneToMany(targetEntity="Mgate\SuiviBundle\Entity\RepartitionJEH", mappedBy="mission",  cascade="all", orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Mgate\SuiviBundle\Entity\RepartitionJEH", mappedBy="mission",  cascade="all",
+     *                                                                        orphanRemoval=true, fetch="EAGER")
      */
     private $repartitionsJEH;
 
@@ -89,6 +103,8 @@ class Mission extends DocType
 
     /**
      * @var int
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="avancement", type="integer", nullable=true)
      */
@@ -117,7 +133,8 @@ class Mission extends DocType
 
     public function getReference()
     {
-        return $this->getEtude()->getReference('nom') . '/' . (!empty($this->getDebutOm()) ? $this->getDebutOm()->format('Y') : 'XX') .
+        return $this->getEtude()->getReference('nom') . '/' . (!empty($this->getDebutOm()) ? $this->getDebutOm()
+                ->format('Y') : 'XX') .
             '/RM/' . $this->getVersion();
     }
 
@@ -152,6 +169,11 @@ class Mission extends DocType
         return ['jehRemuneration' => $nbrJEHRemuneration, 'montantRemuneration' => $prixRemuneration];
     }
 
+    /**
+     * @Groups({"gdpr"})
+     *
+     * @return float|int
+     */
     public function getRemunerationBrute()
     {
         $prixRemuneration = (float) 0;
@@ -163,6 +185,11 @@ class Mission extends DocType
         return $prixRemuneration;
     }
 
+    /**
+     * @Groups({"gdpr"})
+     *
+     * @return int
+     */
     public function getNbrJEH()
     {
         $nbr = 0;

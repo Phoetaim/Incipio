@@ -11,6 +11,7 @@
 namespace Mgate\PersonneBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,14 +34,22 @@ class Mandat
 
     /**
      * @var \DateTime
+     *
      * @Assert\NotBlank()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="debutMandat", type="date",nullable=false)
      */
     private $debutMandat;
 
     /**
      * @var \DateTime
+     *
      * @Assert\NotBlank()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="finMandat", type="date",nullable=false)
      */
     private $finMandat;
@@ -52,7 +61,12 @@ class Mandat
     private $membre;
 
     /**
+     * @var Poste
+     *
      * @Assert\NotNull()
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\ManyToOne(targetEntity="Mgate\PersonneBundle\Entity\Poste", inversedBy="mandats")
      */
     private $poste;

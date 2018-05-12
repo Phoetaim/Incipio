@@ -36,7 +36,8 @@ class Cc extends DocType
 
     public function getReference()
     {
-        return $this->etude->getReference() . '/' . $this->getDateSignature()->format('Y') . '/CC/' . $this->getVersion();
+        return $this->etude->getReference() . '/' . (null !== $this->getDateSignature() ? $this->getDateSignature()
+                ->format('Y') : '') . '/CC/' . $this->getVersion();
     }
 
     /** auto-generated methods */

@@ -18,10 +18,6 @@ class FeatureContext extends MinkContext implements Context
 {
     use KernelDictionary;
 
-    const DEFAULT_USERS = [
-        'admin' => ['username' => 'Load', 'password' => 'admin', 'roles' => ['ROLE_ADMIN']],
-    ];
-
     /**
      * @var array
      */
@@ -47,8 +43,6 @@ class FeatureContext extends MinkContext implements Context
      */
     private $kernel;
 
-    public $username_password = ['admin' => 'admin', 'moderateur' => 'moderateur', 'user' => 'user'];
-
     /**
      * Initializes context.
      *
@@ -71,6 +65,8 @@ class FeatureContext extends MinkContext implements Context
 
     /**
      * @BeforeScenario @createSchema
+     * This handler doesn't seems to be executed before each scenario, but only when a scenario
+     * is annotated with createSchema. Tried without BeforeScenario and it was not working as expected, so keep it.
      */
     public function createDatabase()
     {
@@ -82,6 +78,18 @@ class FeatureContext extends MinkContext implements Context
             'command' => 'doctrine:fixtures:load',
             '-n' => true,
             '-e' => 'test',
+        ]);
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        $input = new ArrayInput([
+            'command' => 'demo:create_data',
+        ]);
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        $input = new ArrayInput([
+            'command' => 'demo:create_users',
         ]);
         $output = new BufferedOutput();
         $application->run($input, $output);
@@ -100,7 +108,10 @@ class FeatureContext extends MinkContext implements Context
     public function afterStep(AfterStepScope $event)
     {
         if (!$event->getTestResult()->isPassed()) {
-            //$this->printLastResponse();
+            echo $this->getSession()->getCurrentUrl() . "\n\n-------";
+            echo substr($this->getSession()->getPage()->getContent(), 100, 200); // the title of the page
+            echo "\n\n------";
+            echo substr($this->getSession()->getPage()->getContent(), 13500, 15000);
         }
     }
 
@@ -111,7 +122,7 @@ class FeatureContext extends MinkContext implements Context
     {
         $this->visit('/login');
         $this->fillField('_username', $username);
-        $this->fillField('_password', self::DEFAULT_USERS[$username]['password']);
+        $this->fillField('_password', \Mgate\DashboardBundle\Command\CreateTestUsersCommand::DEFAULT_USERS[$username]['password']);
         $this->pressButton('Connexion');
     }
 

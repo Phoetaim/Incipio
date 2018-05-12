@@ -197,8 +197,15 @@
                             {{ form_label(form.securiteSociale) }}
                         </div>
                         <div class="col-md-9 col-xs-12">
-                            {{ form_widget(form.securiteSociale, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.securiteSociale) }}
+                            {% if is_granted('ROLE_TRESO') or is_granted('ROLE_RGPD') %}
+                                {{ form_widget(form.securiteSociale, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.securiteSociale) }}
+                            {% else %}
+                                {% do form.securiteSociale.setRendered %}
+                                <small>
+                                    {{ 'membre.securite_sociale_message'|trans({}, 'personne') }}
+                                </small>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="form-group">

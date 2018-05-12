@@ -14,8 +14,6 @@ namespace Mgate\SuiviBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Mgate\SuiviBundle\Entity\ProcesVerbal.
- *
  * @ORM\Table()
  * @ORM\Entity
  */
@@ -66,7 +64,8 @@ class ProcesVerbal extends DocType
     */
     public function getReference()
     {
-        return $this->etude->getReference() . '/' . $this->etude->getCc()->getDateSignature()->format('Y') . '/PVR/' . $this->getVersion();
+        return $this->etude->getReference() . '/' . (null !== $this->etude->getCc()->getDateSignature() ?
+                $this->etude->getCc()->getDateSignature()->format('Y') : '') . '/PVR/' . $this->getVersion();
     }
 
     /**

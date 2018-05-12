@@ -36,6 +36,7 @@ employe:
   ajouter_employe: Ajouter un employé
   ajouter_employe_a: Ajouter un employé à
   confirmation_supprimer_employe: Etes-vous sûr de vouloir supprimer définitivement cet employé ?
+  employe: Employé
   employes: Employés
   liste_employe: Liste des employés
   modifier_employe: Modifier l'employé
@@ -117,11 +118,15 @@ membre:
   photo: Photo
   postes_occupes: Postes occupés
   supprimer_membre: Supprimer le membre
+  securite_sociale_message: >
+    Le numéro de sécurité sociale n'est visible que pour les membres du pôle tréso (ROLE_TRESO) et
+    le responsable RGPD.
 personne:
   mail_invalide: Email non valide
   mail_valide: Email valide
   newsletter_abonne: Abonné à la newsletter
   newsletter_non_abonne: N'est pas abonné à la newsletter
+  personne: Personne
 poste:
   ajouter_poste: Ajouter un poste
   champs:

@@ -190,6 +190,22 @@ class EtudeManager
     }
 
     /**
+     * Get frais de dossier par défaut.
+     */
+    public function getDefaultFraisDossier()
+    {
+        return $this->defaultFraisDossier;
+    }
+
+    /**
+     * Get pourcentage d'acompte par défaut.
+     */
+    public function getDefaultPourcentageAcompte()
+    {
+        return $this->defaultPourcentageAcompte;
+    }
+
+    /**
      * Converti le numero de mandat en année.
      *
      * @param $idMandat

@@ -44,7 +44,6 @@
             <th>{{ 'suivi.nombre_dev_estime'|trans({}, 'suivi') }}</th>
             <th>{{ 'suivi.presentation_projet'|trans({}, 'suivi') }}</th>
             <th>{{ 'suivi.description'|trans({}, 'suivi') }}</th>
-            <th>{{ 'suivi.type_prestation'|trans({}, 'suivi') }}</th>
             <th style="min-width: 200px;">{{ 'suivi.capacite_intervenants'|trans({}, 'suivi') }}</th>
         </tr>
         <tr>
@@ -52,13 +51,15 @@
             <td>{{ etude.ap.nbrDev| default('Non estimé') }}</td>
             <td>{{ etude.presentationprojet|default('')|nl2br }}</td>
             <td>{{ etude.descriptionPrestation|default('')|nl2br }}</td>
-            <td>{{ etude.typeprestationtostring|default('') }}</td>
             <td>
                 {% if etude.competences|default(0) %}<i>{{ 'suivi.realisateurs_capable_de'|trans({}, 'suivi') }} : </i>
                     <br/>{% endif %}
                 {% for competence in etude.competences %}
-                    <label class="label label-default"><a
-                                href="{{ path('N7consultingRh_competence_voir', {'id' : competence.id}) }}">{{ competence.nom }}</a></label>
+                    <label class="label label-default">
+                        <a href="{{ path('N7consultingRh_competence_voir', {'id' : competence.id}) }}">
+                            {{ competence.nom }}
+                        </a>
+                    </label>
                 {% endfor %}
             </td>
         </tr>

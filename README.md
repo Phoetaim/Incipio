@@ -5,12 +5,11 @@
 [![Join the chat at https://gitter.im/jeyser-crm/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jeyser-crm/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
 
-Jeyser CRM (formerly known as Incipio) is an open-source 
+Jeyser CRM (formerly known as Incipio) is an open-source, GDPR compliant 
 [ERP](https://en.wikipedia.org/wiki/Enterprise_resource_planning) / 
 [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management) for all Junior Entreprises belonging or not to 
 [CNJE](http://www.junior-entreprises.com/) and [JADE](http://www.jadenet.org/).
-This is [the official Jeyser CRM repository](https://github.com/n7consulting/Incipio).
-
+Here is [the official Jeyser CRM repository](https://github.com/n7consulting/Incipio).
 
 
 # Details
@@ -23,20 +22,17 @@ The best way to discover Jeyser is to [try the demo](https://jeyser-demo.herokua
 
 Jeyser can be installed and secured with only 5 bash commands. Read the 
 [install documentation](http://jeyser-crm.n7consulting.fr/docs/install) to get your own Jeyser and its free SSL certificate 
-up and running.
+up and running. It is shipped with some demonstration doctypes to help you to write your own.
 
-It is shipped with some demonstration doctypes to help you to write your own.
+Jeyser abides by european law [GDPR](https://www.eugdpr.org/) since the release of version 2.5.0 on the 18/02/2018.
 
 # RoadMap
 
-- Features : 
-    * Add GDPR management before 18/02/2018
+- Features: 
     * Data importer from Siaje
     * Invoices and contract amendment improvement 
     * Add phase lock when an invoice has been issued 
-- Translation : Move every hard coded text in views to translation files to enable i18n of Jeyser.
-- Code Quality : Keep Platinum medal on Sensiolabs Insights. 
-- Code coverage : introduce behavioural tests with Behat.
+- Tests: increase behavioural tests coverage.
 
 
 # Licence

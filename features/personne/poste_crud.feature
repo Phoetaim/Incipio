@@ -17,26 +17,37 @@ Feature: Poste
     Then the response status code should be 200
     When I fill in "Intitule" with "R. Informatique"
     And I fill in "Description" with "Code & Architecture"
-    And I press "Valider"
+    And I press "Enregistrer"
+    # will be the 16th poste
     Then the url should match "/personne/poste"
     And I should see "Poste ajouté"
     And I should see "R. Informatique"
 
   Scenario: I can edit a Poste
     Given I am logged in as "admin"
-    When I go to "/personne/poste/modifier/1"
+    When I go to "/personne/poste/modifier/16"
     Then the response status code should be 200
     When I fill in "Intitule" with "Responsable Tests"
-    And I press "Valider"
+    And I press "Enregistrer"
     Then the url should match "/personne/poste"
     And I should see "Poste modifié"
     And I should see "Responsable Tests"
+
+  Scenario: I can not delete a Poste with members
+    Given I am logged in as "admin"
+    # president poste
+    When I go to "/personne/poste/modifier/1"
+    Then the response status code should be 200
+    And I press "Supprimer le poste"
+    Then the url should match "/personne/poste"
+    And I should see "Impossible de supprimer un poste ayant des membres"
+
 
   # The "@dropSchema" annotation must be added on the last scenario of the feature file to drop the temporary SQLite database
   @dropSchema
   Scenario: I can delete a Poste
     Given I am logged in as "admin"
-    When I go to "/personne/poste/modifier/1"
+    When I go to "/personne/poste/modifier/16"
     Then the response status code should be 200
     And I press "Supprimer le poste"
     Then the url should match "/personne/poste"

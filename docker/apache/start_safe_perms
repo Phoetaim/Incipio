@@ -18,6 +18,7 @@ main() {
     chown -R "$owner:$group" /var/{lock,log,run}/apache*
     chown -R "$owner:$group" var
     chown -R "$owner:$group" web/tmp
+    rm web/tmp/*--* # clean web/tmp folder from exported file
     exec /usr/sbin/apache2ctl "$@"
 }
 

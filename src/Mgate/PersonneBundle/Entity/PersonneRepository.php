@@ -105,8 +105,12 @@ class PersonneRepository extends EntityRepository
 
     /**
      * Requete sur l'ensemble des personnes avec en jointure les différents OneToOne possibles.
+     *
+     * @param bool $orderByNom
+     *
+     * @return mixed
      */
-    public function getAllPersonne()
+    public function getAllPersonne($orderByNom = false)
     {
         $qb = $this->_em->createQueryBuilder();
         $query = $qb->select('p')->from('MgatePersonneBundle:Personne', 'p')
@@ -114,6 +118,9 @@ class PersonneRepository extends EntityRepository
             ->addSelect('employe')
              ->leftJoin('p.membre', 'membre')
             ->addSelect('membre');
+        if ($orderByNom) {
+            $query->orderBy('p.nom', 'asc');
+        }
 
         return $query->getQuery()->getResult();
     }

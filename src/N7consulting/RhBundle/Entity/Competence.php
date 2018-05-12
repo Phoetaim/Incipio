@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Mgate\PersonneBundle\Entity\Membre;
 use Mgate\SuiviBundle\Entity\Etude;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Competence : objet pouvant être attaché à un intervenant ou a une étude pour caractériser ce dont il a besoin.
@@ -24,6 +25,9 @@ class Competence
 
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="nom", type="string", length=20, nullable=false)
      */
     private $nom;

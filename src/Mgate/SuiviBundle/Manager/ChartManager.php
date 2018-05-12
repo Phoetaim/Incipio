@@ -12,11 +12,13 @@
 namespace Mgate\SuiviBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Mgate\PubliBundle\Entity\Document;
 use Mgate\SuiviBundle\Entity\ClientContact;
 use Mgate\SuiviBundle\Entity\Etude as Etude;
 use Mgate\SuiviBundle\Entity\Phase;
 use Monolog\Logger;
 use Ob\HighchartsBundle\Highcharts\Highchart;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Webmozart\KeyValueStore\Api\KeyValueStore;
 use Zend\Json\Expr;
 
@@ -30,9 +32,12 @@ class ChartManager /*extends \Twig_Extension*/
 
     protected $namingConvention;
 
+    protected $rootDir;
+
     private const SIX_MONTHS = 15724800;
 
-    public function __construct(EntityManager $em, EtudeManager $etudeManager, Logger $logger, KeyValueStore $keyValueStore)
+    public function __construct(EntityManager $em, EtudeManager $etudeManager, Logger $logger,
+                                KeyValueStore $keyValueStore, KernelInterface $kernel)
     {
         $this->em = $em;
         $this->etudeManager = $etudeManager;
@@ -42,6 +47,7 @@ class ChartManager /*extends \Twig_Extension*/
         } else {
             $this->namingConvention = 'id';
         }
+        $this->rootDir = $kernel->getRootDir();
     }
 
     public function getGantt(Etude $etude, $type)
@@ -66,7 +72,9 @@ class ChartManager /*extends \Twig_Extension*/
                 }
 
                 $data[] = ['x' => count($cats), 'y' => $date->getTimestamp() * 1000,
-                    'titre' => $contact->getObjet(), 'detail' => 'fait par ' . $contact->getFaitPar()->getPrenomNom() . ' le ' . $date->format('d/m/Y'), ];
+                           'titre' => $contact->getObjet(), 'detail' => 'fait par ' . $contact->getFaitPar()
+                            ->getPrenomNom() . ' le ' . $date->format('d/m/Y'),
+                ];
             }
             $series[] = ['type' => 'scatter', 'data' => $data];
             $cats[] = 'Contact client';
@@ -91,8 +99,11 @@ class ChartManager /*extends \Twig_Extension*/
                 }
 
                 $data[] = ['x' => count($cats), 'y' => $date->getTimestamp() * 1000,
-                    'titre' => 'Avant-Projet', 'detail' => 'signé le ' . $date->format('d/m/Y'), ];
-                $series[] = ['type' => 'scatter', 'data' => $data, 'marker' => ['symbol' => 'square', 'fillColor' => 'blue']];
+                           'titre' => 'Avant-Projet', 'detail' => 'signé le ' . $date->format('d/m/Y'),
+                ];
+                $series[] = ['type' => 'scatter', 'data' => $data,
+                             'marker' => ['symbol' => 'square', 'fillColor' => 'blue'],
+                ];
             }
             $data = $dataSauv;
             if ($etude->getCc() && $etude->getCc()->getDateSignature()) {
@@ -105,8 +116,11 @@ class ChartManager /*extends \Twig_Extension*/
                 }
 
                 $data[] = ['x' => count($cats), 'y' => $date->getTimestamp() * 1000,
-                    'titre' => 'Convention Client', 'detail' => 'signé le ' . $date->format('d/m/Y'), ];
-                $series[] = ['type' => 'scatter', 'data' => $data, 'marker' => ['symbol' => 'triangle', 'fillColor' => 'red']];
+                           'titre' => 'Convention Client', 'detail' => 'signé le ' . $date->format('d/m/Y'),
+                ];
+                $series[] = ['type' => 'scatter', 'data' => $data,
+                             'marker' => ['symbol' => 'triangle', 'fillColor' => 'red'],
+                ];
             }
             $data = $dataSauv;
             if ($etude->getPvr() && $etude->getPvr()->getDateSignature()) {
@@ -119,7 +133,8 @@ class ChartManager /*extends \Twig_Extension*/
                 }
 
                 $data[] = ['x' => count($cats), 'y' => $date->getTimestamp() * 1000,
-                    'titre' => 'Procès Verbal de Recette', 'detail' => 'signé le ' . $date->format('d/m/Y'), ];
+                           'titre' => 'Procès Verbal de Recette', 'detail' => 'signé le ' . $date->format('d/m/Y'),
+                ];
                 $series[] = ['type' => 'scatter', 'data' => $data, 'marker' => ['symbol' => 'circle']];
             }
             $cats[] = 'Documents';
@@ -137,8 +152,11 @@ class ChartManager /*extends \Twig_Extension*/
                 $debut = $etude->getDateLancement();
                 $fin = $etude->getDateFin(true);
 
-                $data[] = ['low' => $debut->getTimestamp() * 1000, 'y' => $fin->getTimestamp() * 1000, 'color' => '#005CA4',
-                    'titre' => 'Durée de déroulement des phases', 'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), ];
+                $data[] = ['low' => $debut->getTimestamp() * 1000, 'y' => $fin->getTimestamp() * 1000,
+                           'color' => '#005CA4',
+                           'titre' => 'Durée de déroulement des phases',
+                           'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'),
+                ];
 
                 $cats[] = 'Etude';
             }
@@ -160,7 +178,9 @@ class ChartManager /*extends \Twig_Extension*/
 
                 $func = new Expr('function() {return this.point.titre;}');
                 $data[] = ['low' => $fin->getTimestamp() * 1000, 'y' => $debut->getTimestamp() * 1000,
-                    'titre' => $phase->getTitre(), 'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 'color' => '#F26729',
+                    'titre' => $phase->getTitre(), 
+                    'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 
+                    'color' => '#F26729',
                     'dataLabels' => [
                         'enabled' => true,
                         'align' => 'left',
@@ -190,10 +210,14 @@ class ChartManager /*extends \Twig_Extension*/
                 $now = new \DateTime('NOW');
                 $mort = ($now > $mort ? clone $now : $mort);
                 $data[] = ['x' => 0, 'y' => $now->getTimestamp() * 1000,
-                    'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'), ];
+                           'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'),
+                ];
                 $data[] = ['x' => count($cats) - 1, 'y' => $now->getTimestamp() * 1000,
-                    'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'), ];
-                $series[] = ['type' => 'spline', 'data' => $data, 'marker' => ['radius' => 1, 'color' => '#545454'], 'color' => '#545454', 'lineWidth' => 1, 'pointWidth' => 5];
+                           'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'),
+                ];
+                $series[] = ['type' => 'spline', 'data' => $data, 'marker' => ['radius' => 1, 'color' => '#545454'],
+                             'color' => '#545454', 'lineWidth' => 1, 'pointWidth' => 5,
+                ];
             }
         }
 
@@ -209,8 +233,8 @@ class ChartManager /*extends \Twig_Extension*/
         $logger = $this->logger;
 
         // Create the file
-        $chemin = 'tmp/' . $filename . '.json';
-        $destination = 'tmp/' . $filename . '.png';
+        $chemin = $this->rootDir . '' . Document::DOCUMENT_TMP_FOLDER . '/' . $filename . '.json';
+        $destination = $this->rootDir . '' . Document::DOCUMENT_TMP_FOLDER . '/' . $filename . '.png';
 
         $render = $ob->render();
 
@@ -284,7 +308,9 @@ class ChartManager /*extends \Twig_Extension*/
 
                 $func = new Expr('function() {return this.point.titre;}');
                 $data[] = ['low' => $fin->getTimestamp() * 1000, 'y' => $debut->getTimestamp() * 1000,
-                    'titre' => $etude->getNom(), 'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 'color' => '#F26729',
+                    'titre' => $etude->getNom(), 
+                    'detail' => 'du ' . $debut->format('d/m/Y') . ' au ' . $fin->format('d/m/Y'), 
+                    'color' => '#F26729',
                     'dataLabels' => [
                         'enabled' => true,
                         'align' => 'left',
@@ -312,10 +338,14 @@ class ChartManager /*extends \Twig_Extension*/
 
         $now = new \DateTime('NOW');
         $data[] = ['x' => 0, 'y' => $now->getTimestamp() * 1000,
-            'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'), ];
+                   'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'),
+        ];
         $data[] = ['x' => count($categories) - 1, 'y' => $now->getTimestamp() * 1000,
-            'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'), ];
-        $series[] = ['type' => 'spline', 'data' => $data, 'marker' => ['radius' => 1, 'color' => '#545454'], 'color' => '#545454', 'lineWidth' => 1, 'pointWidth' => 5];
+                   'titre' => "aujourd'hui", 'detail' => 'le ' . $now->format('d/m/Y'),
+        ];
+        $series[] = ['type' => 'spline', 'data' => $data, 'marker' => ['radius' => 1, 'color' => '#545454'],
+                     'color' => '#545454', 'lineWidth' => 1, 'pointWidth' => 5,
+        ];
 
         $ob = $this->ganttChartFactory($series, $categories);
         $ob->chart->renderTo('ganttChart');  // The #id of the div where to render the chart
@@ -342,7 +372,10 @@ class ChartManager /*extends \Twig_Extension*/
         $ob->credits->enabled(false);
         $ob->legend->enabled(false);
         $ob->exporting->enabled(false);
-        $ob->plotOptions->series(['pointPadding' => 0, 'groupPadding' => 0, 'pointWidth' => 10, 'groupPadding' => 0, 'marker' => ['radius' => 5], 'tooltip' => ['pointFormat' => '<b>{point.titre}</b><br /> {point.detail}']]);
+        $ob->plotOptions->series(['pointPadding' => 0, 'groupPadding' => 0, 'pointWidth' => 10, 'groupPadding' => 0,
+                                  'marker' => ['radius' => 5],
+                                  'tooltip' => ['pointFormat' => '<b>{point.titre}</b><br /> {point.detail}'],
+        ]);
         $ob->plotOptions->scatter(['tooltip' => ['headerFormat' => '']]);
         $ob->series($series);
 

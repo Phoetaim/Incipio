@@ -22,6 +22,7 @@ use Mgate\PubliBundle\Entity\RelatedDocument;
 use Mgate\TresoBundle\Entity\Facture;
 use N7consulting\RhBundle\Entity\Competence;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -75,8 +76,12 @@ class Etude
 
     /**
      * @var string
+     *
      * @Assert\NotBlank()
      * @Assert\Regex(pattern="/\//", match=false)
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="nom", type="string", length=50, nullable=false,  unique=true)
      */
     private $nom;

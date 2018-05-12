@@ -13,10 +13,12 @@ namespace Mgate\PersonneBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Mgate\PubliBundle\Entity\Document;
 use Mgate\PubliBundle\Entity\RelatedDocument;
 use Mgate\SuiviBundle\Entity\Mission;
 use N7consulting\RhBundle\Entity\Competence;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="Mgate\PersonneBundle\Entity\MembreRepository")
  * @UniqueEntity("identifiant")
  */
-class Membre
+class Membre implements AnonymizableInterface
 {
     /**
      * @var int
@@ -36,20 +38,26 @@ class Membre
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Mgate\SuiviBundle\Entity\Mission", mappedBy="intervenant", cascade={"persist","remove"})
+     * @Groups({"gdpr"})
+     *
+     * @ORM\OneToMany(targetEntity="Mgate\SuiviBundle\Entity\Mission", mappedBy="intervenant",
+     *                                                                 cascade={"persist","remove"})
      */
     private $missions;
 
     /**
      * @Assert\Valid()
      *
-     * @ORM\OneToOne(targetEntity="Mgate\PersonneBundle\Entity\Personne", inversedBy="membre", fetch="EAGER", cascade={"persist", "merge", "remove"})
+     * @ORM\OneToOne(targetEntity="Mgate\PersonneBundle\Entity\Personne", inversedBy="membre", fetch="EAGER",
+     *                                                                    cascade={"persist", "merge", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $personne;
 
     /**
      * @var \DateTime
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="dateCE", type="date",nullable=true)
      */
@@ -58,6 +66,8 @@ class Membre
     /**
      * @var string
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="identifiant", type="string", length=10, nullable=true, unique=true)
      */
     private $identifiant;
@@ -65,12 +75,16 @@ class Membre
     /**
      * @var string
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="emailEMSE", type="string", length=50, nullable=true)
      */
     private $emailEMSE;
 
     /**
      * @var int
+     *
+     * @Groups({"gdpr"})
      *
      * @Assert\LessThanOrEqual(32767)
      *
@@ -81,12 +95,16 @@ class Membre
     /**
      * @var \DateTime
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="birthdate", type="date", nullable=true)
      */
     private $dateDeNaissance;
 
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="placeofbirth", type="string", nullable=true)
      */
@@ -95,12 +113,18 @@ class Membre
     /**
      * @Assert\Valid()
      *
-     * @ORM\OneToMany(targetEntity="Mgate\PersonneBundle\Entity\Mandat", mappedBy="membre", cascade={"persist","remove"}, orphanRemoval=true)
+     * @Groups({"gdpr"})
+     *
+     * @ORM\OneToMany(targetEntity="Mgate\PersonneBundle\Entity\Mandat", mappedBy="membre",
+     *                                                                   cascade={"persist","remove"},
+     *                                                                   orphanRemoval=true)
      */
     private $mandats;
 
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="nationalite", type="string", nullable=true)
      */
@@ -113,6 +137,9 @@ class Membre
 
     /**
      * @var string
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="photoURI", type="string", nullable=true)
      */
     private $photoURI;
@@ -122,11 +149,17 @@ class Membre
     /**
      * @var string
      *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="formatPaiement", type="string", length=15, nullable=true)
      */
     private $formatPaiement;
 
     /**
+     * @var Filiere
+     *
+     * @Groups({"gdpr"})
+     *
      * @Assert\NotNull()
      *
      * @ORM\ManyToOne(targetEntity="Mgate\PersonneBundle\Entity\Filiere")
@@ -134,6 +167,10 @@ class Membre
     private $filiere;
 
     /**
+     * @var string
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\Column(name="securiteSociale", type="string", length=25, nullable=true)
      */
     private $securiteSociale;
@@ -146,6 +183,10 @@ class Membre
     private $commentaire;
 
     /**
+     * @var Competence[]|ArrayCollection
+     *
+     * @Groups({"gdpr"})
+     *
      * @ORM\ManyToMany(targetEntity="N7consulting\RhBundle\Entity\Competence", mappedBy="membres", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
@@ -162,6 +203,40 @@ class Membre
     public function __toString()
     {
         return $this->getPersonne()->__toString();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function anonymize(): void
+    {
+        $this->dateConventionEleve = null;
+        $this->identifiant = null;
+        $this->emailEMSE = null;
+        $this->promotion = null;
+        $this->dateDeNaissance = null;
+        $this->lieuDeNaissance = null;
+        $this->nationalite = null;
+        $this->photoURI = null;
+        $this->formatPaiement = null;
+        $this->securiteSociale = null;
+        $this->commentaire = null;
+
+        /* remove non critical (business related) relations */
+        /** @var Competence $c */
+        foreach ($this->competences as $c) {
+            $c->removeMembre($this);
+        }
+
+        /** @var Mandat $m */
+        foreach ($this->mandats as $m) {
+            $this->removeMandat($m);
+        }
+
+        /* @var Document $m */
+        foreach ($this->relatedDocuments as $d) {
+            $this->removeRelatedDocument($d);
+        }
     }
 
     /**

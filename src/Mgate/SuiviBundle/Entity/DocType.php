@@ -14,6 +14,7 @@ namespace Mgate\SuiviBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Mgate\CommentBundle\Entity\Thread;
 use Mgate\PersonneBundle\Entity\Personne;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /** @ORM\MappedSuperclass */
 class DocType
@@ -27,6 +28,8 @@ class DocType
 
     /**
      * @var int
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="version", type="integer", nullable=true)
      */
@@ -67,12 +70,16 @@ class DocType
     private $spt2;
 
     /**
+     * @var Personne
+     *
      * @ORM\ManyToOne(targetEntity="Mgate\PersonneBundle\Entity\Personne", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $signataire1;
 
     /**
+     * @var Personne
+     *
      * @ORM\ManyToOne(targetEntity="Mgate\PersonneBundle\Entity\Personne", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
@@ -80,6 +87,8 @@ class DocType
 
     /**
      * @var \DateTime
+     *
+     * @Groups({"gdpr"})
      *
      * @ORM\Column(name="dateSignature", type="datetime",nullable=true)
      */
@@ -109,6 +118,26 @@ class DocType
     public function __construct()
     {
         $this->setVersion(1);
+    }
+
+    /**
+     * @Groups({"gdpr"})
+     *
+     * @return null|string
+     */
+    public function getSignataire1NomFormel()
+    {
+        return $this->signataire1 ? $this->signataire1->getNomFormel() : null;
+    }
+
+    /**
+     * @Groups({"gdpr"})
+     *
+     * @return null|string
+     */
+    public function getSignataire2NomFormel()
+    {
+        return $this->signataire2 ? $this->signataire2->getNomFormel() : null;
     }
 
     // rajout à la main

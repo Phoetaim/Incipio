@@ -68,7 +68,16 @@
                                     <tr>
                                         <td>{{ 'champs.moyen_paiement'|trans({}, 'personne') }} : {{ membre.formatPaiement }}</td>
                                         <td>{{ 'champs.filiere'|trans({}, 'personne') }} : {{ membre.filiere.nom }}</td>
-                                        <td>{{ 'champs.numero_securite_sociale'|trans({}, 'personne') }} : {{ membre.securiteSociale }}</td>
+                                        <td>{{ 'champs.numero_securite_sociale'|trans({}, 'personne') }} :
+
+                                            {% if is_granted('ROLE_TRESO') or is_granted('ROLE_RGPD') %}
+                                                {{ membre.securiteSociale }}
+                                            {% else %}
+                                                <small>
+                                                    {{ 'membre.securite_sociale_message'|trans({}, 'personne') }}
+                                                </small>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>{{ 'champs.commentaire'|trans({}, 'personne') }} :</td>

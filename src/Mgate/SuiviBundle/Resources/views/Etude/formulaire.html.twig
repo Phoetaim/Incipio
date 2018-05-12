@@ -41,7 +41,7 @@
     </tr>
     <tr>
         <th>{{ form_label(form.prospect) }} {{ form_errors(form.prospect) }}</th>
-        <td>{{ form_widget(form.prospect) }}</td>
+        <td>{{ form_widget(form.prospect, {'attr': {'class': 'select2'}}) }}</td>
     </tr>
     <tr>
         <th>{{ form_label(form.nom) }} {{ form_errors(form.nom) }}</th>
@@ -92,7 +92,5 @@
 
 {{ form_end(form) }}
 
-<script>
-    {{ form_javascript(form) }}
-    {% include "MgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownProspect, knowned: form.prospect, newed: form.newProspect } %}
-</script>
+{{ form_javascript(form) }}
+{% include "MgateSuiviBundle:DocType:selectOrNew.html.twig" with { known: form.knownProspect, knowned: form.prospect, newed: form.newProspect } %}

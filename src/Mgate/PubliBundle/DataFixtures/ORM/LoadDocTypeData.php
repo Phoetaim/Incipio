@@ -65,6 +65,13 @@ class LoadDocTypeData implements FixtureInterface
         $fs->setSize(50200);
         $manager->persist($fs);
 
+        // Bulletin de versement
+        $bv = new Document();
+        $bv->setName('BV');
+        $bv->setPath('BV.docx');
+        $bv->setSize(25490);
+        $manager->persist($bv);
+
         $manager->flush();
     }
 }
