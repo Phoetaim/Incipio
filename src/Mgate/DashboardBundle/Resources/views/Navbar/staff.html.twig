@@ -185,14 +185,12 @@
 
     <!-- PILOTAGE DE LA J.E. -->
     {% if is_granted('ROLE_CA') %}
-        <li class="">
-            <a href="#"><span class="nav-label">{{ 'dashboard.pilotage_je'|trans({}, 'dashboard') }}</span> <i
-                        class="fa fa-angle-left pull-right"></i></a>
-            <ul class="treeview-menu">
-                <li><a href="{{ path('Mgate_indicateurs_index') }}"><span
-                                class="fa fa-globe"></span> {{ 'dashboard.indicateur'|trans({}, 'dashboard') }}</a></li>
-            </ul>
-        </li>
+    <li class="">
+        <a href="#" ><span class="nav-label">{{ 'dashboard.pilotage_je'|trans({}, 'dashboard') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <ul class="treeview-menu">
+            <li><a href="{{ path('Mgate_indicateurs_index') }}"><span class="fa fa-globe"></span> {{ 'dashboard.indicateurs'|trans({}, 'dashboard') }}</a></li>
+        </ul>
+    </li>
     {% endif %}
 
     <!-- ADMINISTRATION DU SITE -->
